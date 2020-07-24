@@ -46,4 +46,43 @@ class Post extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    /**
+     * Like current post by given user
+     * @param \frontend\models\User $user
+     */
+    public function like(User $user)
+    {
+        $redis = Yii::$app->redis; 
+        $redis->sadd("post:{$this->getId()}:likes", $user->getId());
+        $redis->sadd("user:{$this->getId()}:likes", $user->getId());
+    }
+
+    /**
+     * Unlike current post by given user
+     * @param \frontend\models\User $user
+     */
+    public function unlike(User $user)
+    {
+        $redis = Yii::$app->redis; 
+        $redis->srem("post:{$this->getId()}:likes", $user->getId());
+        $redis->srem("user:{$this->getId()}:likes", $user->getId());
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function countLikes()
+    {
+        $redis = Yii::$app->redis;
+        return $redis->scard("post:{$this->getId()}:likes");
+    }
+
+    public function isLikedBy(User $user)
+    {
+        $redis = Yii::$app->redis;
+        return $redis->sismember("post:{$this->getId()}:likes", $user->getId());
+    }
 }
