@@ -2,7 +2,7 @@
 /yii
 /yii_test
 /yii_test.bat
-/uploads
+/frontend/web/uploads/*
 
 # phpstorm project files
 .idea
