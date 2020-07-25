@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
@@ -102,7 +103,10 @@ FontAwesomeAsset::register($this);
                 
                 <footer class="row">
                     <div class="col-xl-12">
-                        <p class="text-center p-4">Copyright &copy; <span class="tm-current-year">2020</span> Nebado</p>
+                        <p class="text-center p-4">Copyright &copy;
+                            <a href="<?php echo Url::to(['/site/about']); ?>">Insta</a>
+                            <span class="tm-current-year">2020</span> Nebado
+                        </p>
                     </div>
                 </footer>
             </div> <!-- .container -->
