@@ -935,3 +935,12 @@ iframe { max-width: 100%; }
     display: inline-block;
     padding: 0 10px 20px 0;
 }
+
+ul.language {
+    margin-top: 15px;
+    background-color: none;                    
+}
+
+ul.language li form select { color: #000000; }
+
+ul.language li form { color: #000000; }

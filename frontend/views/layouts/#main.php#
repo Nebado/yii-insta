@@ -61,9 +61,9 @@ FontAwesomeAsset::register($this);
                             <nav class="navbar navbar-expand-sm">
                                 <ul class="language navbar-nav navbar-left nav">
                                     <li>
-                                    <?= Html::beginForm(['/site/language']) ?>
-                                    <?= Html::dropDownList('language', Yii::$app->language, ['en-US' => 'English', 'ru-RU' => 'Русский']) ?>
-                                    <?= Html::submitButton('Change') ?>
+                                        <?= Html::beginForm(['/site/language']) ?>
+                                        <?= Html::dropDownList('language', Yii::$app->language, ['en-US' => 'English', 'ru-RU' => 'Русский']) ?>
+                                        <?= Html::submitButton('Change') ?>
                             <?= Html::endForm() ?>
                             <li>
                                 </ul>
