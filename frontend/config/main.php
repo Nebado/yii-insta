@@ -52,9 +52,7 @@ return [
                 'post/<id:\d+>' => 'post/default/view',
             ],
         ],
-        'storage' => [
-            'class' => 'frontend\components\Storage',
-        ],
+        
         'feedService' => [
             'class' => 'frontend\components\FeedService',
         ],

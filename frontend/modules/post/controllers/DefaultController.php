@@ -92,6 +92,31 @@ class DefaultController extends Controller
             'likesCount' => $post->countLikes(),
         ];
     }
+
+    public function actionComplain()
+    {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/user/default/login']);
+        }
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $id = Yii::$app->request->post('id');
+
+        $currentUser = Yii::$app->user->identity;
+        $post = $this->findPost($id);
+
+        if ($post->complain($currentUser)) {
+            return [
+                'success' => true,
+                'text' => 'Post reported'
+            ];
+        }
+        return [
+            'success' => false,
+            'text' => 'Error',
+        ];
+    }
     
     private function findPost($id)
     {
