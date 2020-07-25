@@ -4,27 +4,30 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\helpers\HtmlPurifier;
 use dosamigos\fileupload\FileUpload;
+
+$this->title = Html::encode($user->username);
 ?>
 
-<h3><b><?php echo Html::encode($user->username); ?></b></h3>
-<p><?php echo HtmlPurifier::process($user->about); ?></p>
-<hr>
+<br/><br/>
+<div class="page-posts no-padding">
+    <div class="row">
+        <div class="page page-post col-sm-12 col-xs-12 post-82">
+            <div class="blog-posts blog-posts-large">
+                <div class="row">
+                    <article class="profile col-sm-12 col-xs-12">
+                        <div class="profile-title">
+                            <img src="<?php echo $user->getPicture(); ?>" id="profile-picture" class="author-image" />
+                            <div class="author-name"><?php echo Html::encode($user->username); ?></div>
 
-<img src="<?php echo $user->getPicture(); ?>" id="profile-picture" />
-<br><br>
+                            <?php if ($currentUser && $currentUser->equals($user)): ?>
 
-<?php if ($currentUser && $currentUser->equals($user)): ?>
-
-    <div class="alert alert-success display-none" id="profile-image-success">Profile image updated</div>
-    <div class="alert alert-danger display-none" id="profile-image-fail"></div>
-
-    <?= FileUpload::widget([
-        'model' => $modelPicture,
-        'attribute' => 'picture',
-        'url' => ['/user/profile/upload-picture'], // your url, this is just for demo purposes,
-        'options' => ['accept' => 'image/*'],
-        'clientEvents' => [
-            'fileuploaddone' => 'function(e, data) {
+                                <?= FileUpload::widget([
+                                    'model' => $modelPicture,
+                                    'attribute' => 'picture',
+                                    'url' => ['/user/profile/upload-picture'], // your url, this is just for demo purposes,
+                                    'options' => ['accept' => 'image/*'],
+                                    'clientEvents' => [
+                                        'fileuploaddone' => 'function(e, data) {
 if (data.result.success) {
 $("#profile-image-success").show();
 $("#profile-image-fail").hide();
@@ -34,40 +37,78 @@ $("#profile-image-fail").html(data.result.errors.picture).show();
 $("#profile-image-success").hide();
 }
                             }',
-        ],
-    ]); ?>
+                                    ],
+                                ]); ?>
+                                <a href="#" class="btn btn-default">Edit profile</a>
+                            <?php endif; ?>
 
-<?php else: ?>
+                            <!-- <a href="#" class="btn btn-default">Upload profile image</a> -->
 
-    <a href="<?php echo Url::to(['/user/profile/subscribe', 'id' => $user->getId()]); ?>" class="btn btn-info">Subscribe</a>
-    <a href="<?php echo Url::to(['/user/profile/unsubscribe', 'id' => $user->getId()]); ?>" class="btn btn-info">Unsubscribe</a>
+                            <br><br>
 
-    <hr>
+                            <div class="alert alert-success display-none" id="profile-image-success">Profile image updated</div>
+                            <div class="alert alert-danger display-none" id="profile-image-fail"></div>
+                            
+                        </div>
 
-    <?php if ($currentUser): ?>
-        <h5>Friends, who are also following <?php echo Html::encode($user->username); ?></h5>
-        <div class="row">
-            <?php foreach ($currentUser->getMutualSubscriptionsTo($user) as $item): ?>
-                <div class="col-md-12">
-                    <a href="<?php echo Url::to(['/user/profile/view', 'nickname' => ($item['nickname']) ? $item['nickname'] : $item['id']]); ?>">
-                        <?php echo Html::encode($item['username']); ?>
-                    </a>
+                        <?php if ($currentUser && !$currentUser->equals($user)): ?>
+                            <a href="<?php echo Url::to(['/user/profile/subscribe', 'id' => $user->getId()]); ?>" class="btn btn-info">Subscribe</a>
+                            <a href="<?php echo Url::to(['/user/profile/unsubscribe', 'id' => $user->getId()]); ?>" class="btn btn-info">Unsubscribe</a>
+                            <hr>
+
+                            <h5>Friends, who are also following <?php echo Html::encode($user->username); ?></h5>
+                            <div class="row">
+                                <?php foreach ($currentUser->getMutualSubscriptionsTo($user) as $item): ?>
+                                    <div class="col-md-12">
+                                        <a href="<?php echo Url::to(['/user/profile/view', 'nickname' => ($item['nickname']) ? $item['nickname'] : $item['id']]); ?>">
+                                            <?php echo Html::encode($item['username']); ?>
+                                        </a>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+
+                        <?php endif; ?>
+
+                        <?php if ($user->about): ?>
+                            <div class="profile-description">
+                                <p><?php echo HtmlPurifier::process($user->about); ?></p>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="profile-bottom">
+                            <div class="profile-post-count">
+                                <span><?php echo $user->getPostCount(); ?> posts</span>
+                            </div>
+                            <div class="profile-followers">
+                                <a href="#" data-toggle="modal" data-target="#myModal2"><?php echo $user->countFollowers(); ?> followers</a>
+                            </div>
+                            <div class="profile-following">
+                                <a href="#" data-toggle="modal" data-target="#myModal1"><?php echo $user->countSubscriptions(); ?> following</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <br/><br/>
+
+                    <div class="col-sm-12 col-xs-12">
+                        <div class="row profile-posts">
+                            <?php foreach($user->getPosts() as $post): ?>
+                            <div class="col-md-4 profile-post">
+                                <a href="<?php echo Url::to(['/post/default/view', 'id' => $post->getId()]); ?>">
+                                    <img src="<?php echo Yii::$app->storage->getFile($post->filename); ?>" width="600" height="400" />
+                                </a>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    
                 </div>
-            <?php endforeach; ?>
+            </div>
         </div>
-    <?php endif; ?>
+    </div>
+</div>
 
-<?php endif; ?>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-    Subscriptions: <?php echo $user->countSubscriptions(); ?>
-</button>
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">
-    Followers: <?php echo $user->countFollowers(); ?>
-</button>
+<hr>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

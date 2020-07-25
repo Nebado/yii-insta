@@ -22,7 +22,9 @@
         "yiisoft/yii2-faker": "^2.0",
         "yiisoft/yii2-redis": "^2.0",
         "2amigos/yii2-file-upload-widget": "~1.0",
-        "intervention/image": "^2.5"
+        "intervention/image": "^2.5",
+        "bower-asset/jquery": "3.2.1",
+        "bower-asset/font-awesome": "5.0.8"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
