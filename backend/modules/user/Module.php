@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\modules\complaints;
+namespace backend\modules\user;
 
 /**
- * complaints module definition class
+ * user module definition class
  */
 class Module extends \yii\base\Module
 {
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'backend\modules\complaints\controllers';
+    public $controllerNamespace = 'backend\modules\user\controllers';
 
     /**
      * {@inheritdoc}

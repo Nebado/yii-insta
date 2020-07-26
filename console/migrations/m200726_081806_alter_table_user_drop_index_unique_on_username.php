@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Class m200725_121016_alter_table_post_add_column_complaints
+ * Class m200726_081806_alter_table_user_drop_index_unique_on_username
  */
-class m200725_121016_alter_table_post_add_column_complaints extends Migration
+class m200726_081806_alter_table_user_drop_index_unique_on_username extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->addColumn('{{%post}}', 'complaints', $this->integer());
+        $this->dropIndex('username', 'user');
     }
 
     /**
@@ -20,7 +20,7 @@ class m200725_121016_alter_table_post_add_column_complaints extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('{{%post}}', 'complaints');
+        $this->createIndex('username', 'user', 'username', $unique = true);
     }
 
     /*
@@ -32,7 +32,7 @@ class m200725_121016_alter_table_post_add_column_complaints extends Migration
 
     public function down()
     {
-        echo "m200725_121016_alter_table_post_add_column_complaints cannot be reverted.\n";
+        echo "m200726_081806_alter_table_user_drop_index_unique_on_username cannot be reverted.\n";
 
         return false;
     }

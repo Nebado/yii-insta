@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Post */
+/* @var $model backend\models\User */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Posts', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="post-view">
+<div class="user-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Approve', ['approve', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -30,17 +30,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'user_id',
             [
-                'attribute' => 'filename',
+                'attribute' => 'picture',
                 'format' => 'raw',
-                'value' => function ($post) {
-                    return Html::img($post->getImage());
+                'value' => function ($user) {
+                    return Html::img($user->getImage(), ['width' => '120px']);
                 },
             ],
-            'description:ntext',
+            'username',
+            'email:email',
+            'status',
             'created_at:datetime',
-            'complaints',
+            'updated_at:datetime',
+            'about:ntext',
+            'type',
+            'nickname',
+            [
+                'attribute' => 'roles',
+                'value' => function($user) {
+                    return implode(',', $user->getRoles());
+                }
+            ],
         ],
     ]) ?>
 

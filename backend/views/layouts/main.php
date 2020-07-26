@@ -24,9 +24,9 @@ AppAsset::register($this);
     <?php $this->head() ?>
 </head>
 <body>
-<?php $this->beginBody() ?>
+    <?php $this->beginBody() ?>
 
-<div class="wrap">
+    <div class="wrap">
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
@@ -37,18 +37,20 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/']],
+        ['label' => 'Complaints', 'url' => ['/complaints/manage/index']],
+        ['label' => 'Users', 'url' => ['/user/manage/index']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
         $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
+                     . Html::beginForm(['/site/logout'], 'post')
+                     . Html::submitButton(
+                         'Logout (' . Yii::$app->user->identity->username . ')',
+                         ['class' => 'btn btn-link logout']
+                     )
+                     . Html::endForm()
+                     . '</li>';
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
